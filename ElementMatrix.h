@@ -27,6 +27,7 @@ class ElementMatrix{
         bool checkIfDead(int x, int y);
         void DieAndReplace(int x, int y, std::string element_name);
         //void DieAndReplaceWithElement(int x, int y, Element* element);
+        void pushElements(int xPos, int yPos, int radius, float forceMultiplier);
         
     
 };

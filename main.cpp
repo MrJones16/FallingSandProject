@@ -213,15 +213,18 @@ int main(int argc, char *argv[])
         if (mouseX < 0) mouseX = 0;
         if (mouseY > Height-1) mouseY = Height-1;
         if (mouseY < 0) mouseY = 0;
-        //simple draw white pixel
         if (LMB){
             //pixels[mouseY * Width + mouseX] = 0xFFFFFFFF;
-            for (int x = -brush_size; x < brush_size + 1; x++){
-                int x2 = mouseX + x;
-                for (int y = -brush_size; y < brush_size + 1; y++){
-                    int y2 = mouseY + y;
-                    if (sqrt(pow((x2 - mouseX), 2) + pow(y2 - mouseY,2)) < brush_size){
-                        matrix->setElementByString(x2, y2, curr_element);
+            if (curr_element == "Particle"){
+                matrix->pushElements(mouseX, mouseY, brush_size, 1);
+            }else{
+                for (int x = -brush_size; x < brush_size + 1; x++){
+                    int x2 = mouseX + x;
+                    for (int y = -brush_size; y < brush_size + 1; y++){
+                        int y2 = mouseY + y;
+                        if (sqrt(pow((x2 - mouseX), 2) + pow(y2 - mouseY,2)) < brush_size){
+                            matrix->setElementByString(x2, y2, curr_element);
+                        }
                     }
                 }
             }
@@ -234,6 +237,8 @@ int main(int argc, char *argv[])
 
         //get the matrix pixels to render
         matrix->getMatrixPixels(pixels);
+
+        //replace brush pixels to show the brush
         for (int x = -brush_size; x < brush_size + 1; x++){
             int x2 = mouseX + x;
             for (int y = -brush_size; y < brush_size + 1; y++){

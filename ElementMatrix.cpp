@@ -1,6 +1,7 @@
 #include "ElementMatrix.h"
 #include <vector>
 #include <iostream>
+#include <math.h>
 #include "Element.h"
 #include "Elements.h"
 #include "Particle.h"
@@ -154,3 +155,24 @@ void ElementMatrix::DieAndReplace(int x, int y, std::string element_name){
     setElementByString(x,y,"Empty");
 }
 
+void ElementMatrix::pushElements(int xPos, int yPos, int radius, float forceMultiplier){
+    for (int x = xPos - radius; x < xPos + radius + 1; x++){
+        //bounds checking
+        if (x < 0) continue;
+        if (x > this->Width - 1) continue;
+        for (int y = yPos - radius; y < yPos + radius + 1; y++){
+            //bounds checking
+            if (y < 0) continue;
+            if (y > this->Height - 1) continue;
+            if (sqrt(pow((x - xPos), 2) + pow(y - yPos,2)) < radius){
+                //check distance from center to make it a circle
+                Element* element = getElement(x,y);
+                if (element->mass == 1) return;
+                Particle* p = new Particle(x, y);
+                p->setContainedElement(element);
+                p->setVelocity((x - xPos) * forceMultiplier, (y - yPos)*forceMultiplier);
+                setElement(x,y, p);
+            }
+        }
+    }
+}
