@@ -136,7 +136,7 @@ void Wood::actOnOther(Element* element, ElementMatrix* matrix){
 void Wood::ignitedAction(ElementMatrix* matrix){
     //create heat since it is burning wood!
     if (temperature < heatingPoint * 2);
-    temperature += 5;
+    temperature += 10;
 
     //add a lot of variable red to the color
     red = ((static_cast <float> (rand()) / static_cast <float> (RAND_MAX))*10) + 240;
@@ -148,11 +148,20 @@ void Wood::ignitedAction(ElementMatrix* matrix){
     }
     Element* element;
     //chance to place fire surrounding the wood
-    if ((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) > 0.9f){
-        element = matrix->getElement(x,y-1);
+    if ((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) > 0.95f){
+        element = matrix->getElement(x,y-1);//on top of the wood
         if (element != NULL){
             if (element->mass == 0){
-                matrix->setElementByString(x,y-1, "Fire");
+                if ((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) > 0.8f){
+                    Particle* p = new Particle(x,y-1);
+                    p->setContainedElement(new Fire(x,y-1));
+                    int randomVelocityX = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 5;
+                    if ((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) > 0.5f) randomVelocityX*= -1;
+                    p->setVelocity(randomVelocityX, -8);
+                    matrix->setElement(x,y-1, p);
+                }else{
+                    matrix->setElementByString(x,y-1, "Fire");
+                }
             }
         }
         element = matrix->getElement(x+1,y);

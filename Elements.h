@@ -4,7 +4,7 @@
 #include "ImmovableSolid.h"
 #include "MovableSolid.h"
 #include "Gas.h"
-//#include "Particle.h"
+#include "Particle.h"
 
 
 class EmptySource : public ImmovableSolid {
