@@ -75,6 +75,9 @@ int main(int argc, char *argv[])
                 if (SDLK_c == event.key.keysym.sym){
                     memset(pixels, 0, Width * Height * sizeof(Uint32));
                 }
+                if (SDLK_ESCAPE == event.key.keysym.sym){
+                    quit = true;
+                }
                 break;
             case SDL_KEYUP:// key ups
                 if (SDLK_a == event.key.keysym.sym){
